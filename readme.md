@@ -102,27 +102,9 @@
 
 
 ## 📖 แนวคิดและทฤษฎีที่เกี่ยวข้อง
-
 * System Development Life Cycle (SDLC)
 * ระบบฐานข้อมูล (Database System)
 * Web Application
 * การออกแบบ UX/UI
 * ระบบคิว (Queue Management: FIFO) 
 
-
-
-## 👨‍💻 ผู้พัฒนา (Author)
-
-* นักศึกษา/ผู้พัฒนาโครงงาน
-
-*(เพิ่มชื่อ-นามสกุล / GitHub ได้ตรงนี้)*
-
-
-
-## 📜 License
-
-This project is for educational purposes.
-
-
-
-ถ้าคุณอยากให้ผม “ปรับ README ให้ตรงกับโค้ดจริง (เช่นมี React / Laravel / MySQL)” หรือเพิ่มส่วน **วิธีติดตั้ง (Installation)** / **API / Screenshot** บอกมาได้เลย เดี๋ยวจัดให้ครบแบบโปรเจค GitHub จริง ๆ 👍
