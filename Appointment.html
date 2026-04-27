@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>การนัดหมาย</title>
+  <link rel="stylesheet" href="styles2.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/th.js"></script>
+
+</head>
+<header class="header">
+  <a href="index.html" style="text-decoration: none;">
+    <div class="logo-container">
+      <img src="img/11.jpg" alt="logo" class="logo">
+      <span class="store-name">คลินิกทันตกรรมแกรนด์สไมล์</span>
+    </div>
+  </a>
+  <div class="header-user"> <span id="userName"></span></div>
+</header>
+<h2>การนัดหมาย</h2>
+
+<body>
+  <div class="container">
+    <div id="calendar"></div>
+    <div class="appointment-form">
+      <form id="appointmentForm">
+        <label>ชื่อ-สกุล:</label>
+        <input type="text"><br>
+        <label>วันที่:</label>
+        <input type="text" id="selectedDate" readonly><br>
+
+        <label>เวลา:</label>
+        <!-- <label for="appointment_time">เลือกเวลานัดหมาย:</label>
+        <input type="time" id="appointmentTime min=" 09:00" max="18:00" step="1800"> -->
+
+        <select id="appointmentTime">
+            <option value="09:00">16:00</option>
+            <option value="10:00">16:30</option>
+            <option value="11:00">17:30</option>
+            <option value="13:00">18.00</option>
+            <option value="14:00">18:30</option>
+          </select><br>
+
+        <label>รายละเอียด:</label>
+        <textarea id="appointmentDetails" rows="4"></textarea><br>
+
+        <button type="submit">ยืนยันการนัด</button>
+      </form>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script src="script1.js"></script>
+  <!-- <footer class="footer">
+    <p class="footer-text"> Grand Smile Dental Clinic</p>
+  </footer> -->
+</body>
+
+</html>

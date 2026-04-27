@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดการวันหยุดและวันที่เปิดให้จอง</title>
+    <link rel="stylesheet" href="styles3.css">
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { width: 50%; margin: auto; background: #fff; padding: 20px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; }
+        button {  background-color: #28a745; color: white;  padding: 10px 15px; margin: 5px; cursor: pointer; }
+        .delete-btn { background-color: red; color: white; }
+        .list-container { display: flex; justify-content: space-around; }
+    </style>
+</head>
+<header class="header">
+    <a href="index.html" style="text-decoration: none;"> 
+    <div class="logo-container">
+        <img src="img/11.jpg" alt="logo" class="logo">
+        <span class="store-name">คลินิกทันตกรรมแกรนด์สไมล์</span>
+      </div> </a>
+    <div class="header-user"> <span id="userName"></span></div> 
+  </header> 
+<body>
+    <div class="container">
+        <h2>จัดการวันหยุดและวันที่เปิดให้จอง</h2>
+        
+        <h3>เพิ่มวันหยุด</h3>
+        <input type="date" id="holidayDate">
+        <button onclick="addHoliday()">เพิ่มวันหยุด</button>
+
+        <h3>เพิ่มวันที่เปิดให้จอง</h3>
+        <input type="date" id="bookingDate">
+        <button onclick="addBookingDate()">เพิ่มวันที่เปิดให้จอง</button>
+
+        <div class="list-container">
+            <div>
+                <h3>วันหยุด</h3>
+                <ul id="holidayList"></ul>
+            </div>
+            <div>
+                <h3>วันที่เปิดให้จอง</h3>
+                <ul id="bookingList"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            loadHolidays();
+            loadBookingDates();
+        });
+
+        function addHoliday() {
+            let date = document.getElementById("holidayDate").value;
+            if (!date) return alert("กรุณาเลือกวันที่!");
+
+            let holidays = JSON.parse(localStorage.getItem("holidays")) || [];
+            if (holidays.includes(date)) return alert("วันนี้มีอยู่ในระบบแล้ว!");
+
+            holidays.push(date);
+            localStorage.setItem("holidays", JSON.stringify(holidays));
+            loadHolidays();
+        }
+
+        function addBookingDate() {
+            let date = document.getElementById("bookingDate").value;
+            if (!date) return alert("กรุณาเลือกวันที่!");
+
+            let bookingDates = JSON.parse(localStorage.getItem("bookingDates")) || [];
+            if (bookingDates.includes(date)) return alert("วันนี้เปิดให้จองแล้ว!");
+
+            bookingDates.push(date);
+            localStorage.setItem("bookingDates", JSON.stringify(bookingDates));
+            loadBookingDates();
+        }
+
+        function loadHolidays() {
+            let holidayList = document.getElementById("holidayList");
+            holidayList.innerHTML = "";
+
+            let holidays = JSON.parse(localStorage.getItem("holidays")) || [];
+            holidays.forEach((date, index) => {
+                let li = `<li>${date} <button class="delete-btn" onclick="deleteHoliday(${index})">ลบ</button></li>`;
+                holidayList.innerHTML += li;
+            });
+        }
+
+        function loadBookingDates() {
+            let bookingList = document.getElementById("bookingList");
+            bookingList.innerHTML = "";
+
+            let bookingDates = JSON.parse(localStorage.getItem("bookingDates")) || [];
+            bookingDates.forEach((date, index) => {
+                let li = `<li>${date} <button class="delete-btn" onclick="deleteBookingDate(${index})">ลบ</button></li>`;
+                bookingList.innerHTML += li;
+            });
+        }
+
+        function deleteHoliday(index) {
+            let holidays = JSON.parse(localStorage.getItem("holidays")) || [];
+            holidays.splice(index, 1);
+            localStorage.setItem("holidays", JSON.stringify(holidays));
+            loadHolidays();
+        }
+
+        function deleteBookingDate(index) {
+            let bookingDates = JSON.parse(localStorage.getItem("bookingDates")) || [];
+            bookingDates.splice(index, 1);
+            localStorage.setItem("bookingDates", JSON.stringify(bookingDates));
+            loadBookingDates();
+        }
+    </script> -->
+</body>
+</html>

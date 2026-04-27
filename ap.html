@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ปฏิทินการนัดหมาย</title>
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales/th.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    #calendar {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .holiday {
+      background-color: red !important;
+      color: white;
+    }
+
+    .available {
+      background-color: green !important;
+      color: white;
+    }
+
+    button {
+      margin-top: 10px;
+      width: 100%;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .cancel-btn {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>ปฏิทินการนัดหมาย</h2>
+  <div id="calendar"></div>
+  <form id="appointmentForm">
+    <label>วันที่:</label>
+    <input type="text" id="selectedDate" readonly><br>
+    <label>เวลา:</label>
+    <select id="appointmentTime">
+      <option value="09:00">09:00</option>
+      <option value="10:00">10:00</option>
+      <option value="11:00">11:00</option>
+      <option value="13:00">13:00</option>
+      <option value="14:00">14:00</option>
+      <option value="15:00">15:00</option>
+      <option value="16:00">16:00</option>
+    </select><br>
+
+    <label>รายละเอียด:</label>
+    <textarea id="appointmentDetails" rows="4"></textarea><br>
+
+    <button type="submit">ยืนยันการนัด</button>
+  </form>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+      let holidays = JSON.parse(localStorage.getItem("holidays")) || [];
+      let bookingDates = JSON.parse(localStorage.getItem("bookingDates")) || [];
+
+      let holidayEvents = holidays.map(date => ({
+        title: "วันหยุด",
+        start: date,
+        display: "background",
+        className: "holiday"
+      }));
+
+      let bookingEvents = bookingDates.map(date => ({
+        title: "",
+        start: date,
+        display: "background",
+        className: "available"
+      }));
+
+      let calendarEl = document.getElementById('calendar');
+      let calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'th',
+        headerToolbar: {
+          left: 'prev',
+          center: 'title',
+          right: 'next'
+        },
+        events: [...holidayEvents, ...bookingEvents],
+        dateClick: function (info) {
+
+          if (holidays.includes(info.dateStr)) {
+            alert("วันนี้เป็นวันหยุด ไม่สามารถนัดหมายได้!");
+          } else if (bookingDates.includes(info.dateStr)) {
+            document.getElementById("selectedDate").value = info.dateStr;
+            if (confirmBooking) {
+              saveAppointment(info.dateStr);
+            }
+          } else {
+            alert("วันนี้ไม่ได้เปิดให้จองนัดหมาย!");
+          }
+
+        }
+      });
+
+      calendar.render();
+    });
+
+    // function saveAppointment(date) {
+    //     let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+    //     appointments.push({ date: date });
+    //     localStorage.setItem("appointments", JSON.stringify(appointments));
+    //     alert("บันทึกการนัดหมายสำเร็จ!");
+    // }
+    // จัดการฟอร์มการนัดหมาย
+    const form = document.getElementById("appointmentForm");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const selectedDate = document.getElementById("selectedDate").value;
+      const time = document.getElementById("appointmentTime").value;
+      const details = document.getElementById("appointmentDetails").value;
+
+      if (!selectedDate || !time || !details) {
+        alert("กรุณากรอกข้อมูลให้ครบถ้วน!");
+        return;
+      }
+      console.log("บันทึกการนัดหมาย:", appointmentData);
+      alert("บันทึกการนัดหมายสำเร็จ!");
+
+      // เคลียร์ฟอร์ม
+      form.reset();
+    });
+  </script>
+</body>
+
+</html>

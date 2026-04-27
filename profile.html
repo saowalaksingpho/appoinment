@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โปรไฟล์ผู้ใช้</title>
+    <link rel="stylesheet" href="styles3.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #98d1b5;
+        }
+    </style>
+</head>
+<header class="header">
+  <a href="index2.html" style="text-decoration: none;"> 
+  <div class="logo-container">
+      <img src="img/11.jpg" alt="logo" class="logo">
+      <span class="store-name">คลินิกทันตกรรมแกรนด์สไมล์</span>
+    </div> </a>
+  <div class="header-user"> <span id="userName"></span></div> 
+</header> 
+<body>
+
+<div class="container mt-5 text-center">
+    <h2>โปรไฟล์ของฉัน</h2>
+    
+    <div class="card p-3">
+        <div class="card-body">
+            <img id="profileImage" src="img/user.png" class="profile-pic mb-3" >
+            <input type="file" id="uploadImage" accept="image/*" class="form-control mb-3" onchange="uploadProfilePic()">
+            
+            <h4 id="username">รักษา รัตนไพศาล </h4>
+            <p><strong> อีเมล:</strong> <span id="email">raksa@example.com</span></p>
+            <p><strong> เบอร์โทร:</strong> <span id="phone">0812345678</span></p>
+            <button class="btn btn-primary" onclick="editProfile()">✏️ แก้ไข</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// โหลดข้อมูลโปรไฟล์
+// function loadProfile() {
+//     const profile = {
+//         username: "สมชาย ใจดี",
+//         email: "somchai@example.com",
+//         phone: "0812345678",
+//         image: "default-avatar.png"
+//     };
+//     document.getElementById("username").innerText = profile.username;
+//     document.getElementById("email").innerText = profile.email;
+//     document.getElementById("phone").innerText = profile.phone;
+//     document.getElementById("profileImage").src = profile.image;
+//}
+
+// อัปโหลดรูปโปรไฟล์
+function uploadProfilePic() {
+    const file = document.getElementById("uploadImage").files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById("profileImage").src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// ไปหน้าแก้ไขข้อมูล
+function editProfile() {
+    window.location.href = "edit_profile.html";
+}
+
+window.onload = loadProfile;
+</script>
+
+</body>
+</html>
