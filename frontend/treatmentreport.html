@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>รายงานการรักษา</title>
+  
+<style>
+body {
+     font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    margin: 0;
+    padding: 40px;
+}
+.top-bar {
+    display: flex;
+}
+/* กระดาษ */
+.paper {
+    width: 900px;
+    height: 1100px;
+    margin: auto;
+    background: white;
+    padding: 40px 50px;
+    box-sizing: border-box;
+}
+
+.clinic-info {
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.clinic-name {
+    font-size: 14px;
+    font-weight: 500;
+}
+.logo {
+   width: 60PX;
+    height: 60px;
+    border-radius: 50%;
+    background: #eaeaea;
+    margin-right: 20px;
+    display: flex;
+    font-size: 40px;
+}
+
+.line {
+    border-top: 1px solid #ddd;
+    margin: 15px 0 30px;
+}
+
+/* title */
+.title-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.doctor {
+    font-size: 16px;
+}
+
+/* table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #f3eaea;
+}
+
+th {
+    font-weight: 500;
+    padding: 12px 10px;
+    text-align: left;
+    font-size: 15px;
+}
+
+td {
+    padding: 10px;
+    font-size: 15px;
+}
+
+/* column widths */
+.col-no { width: 60px; }
+.col-date { width: 140px; }
+.col-id { width: 100px; }
+.col-name { width: 200px; }
+
+/* footer text */
+.footer {
+    text-align: center;
+    margin-top: 80px;
+    font-size: 22px;
+    font-weight: 500;
+}
+</style>
+</head>
+
+<body>
+
+<div class="paper">
+
+    <!-- header -->
+    <div class="top-bar">
+         <div >
+         <img src="../img/11.jpg" alt="logo" class="logo"> </div>
+        <div class="clinic-info">
+            <div class="clinic-name">คลินิกทันตกรรมแกรนด์สไมล์</div>
+            53/110 ถนนนวนคร ต.คลองหลวง ปทุมธานี 12120<br>
+            โทร 095 590 5307
+        </div>
+        <div></div>
+    </div>
+
+    <div class="line"></div>
+
+    <!-- title -->
+    <div class="title-row">
+        <div class="title">รายงานการรักษา</div>
+        <div class="doctor">ชื่อแพทย์</div>
+    </div>
+
+    <!-- table -->
+    <table>
+        <thead>
+            <tr>
+                <th class="col-no">ลำดับ</th>
+                <th class="col-date">วันที่</th>
+                <th class="col-id">รหัสผู้ใช้</th>
+                <th class="col-name">ชื่อ-สกุล</th>
+                <th>รายละเอียด</th>
+            </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+    </table>
+
+</div>
+
+<script>
+const data = [
+    {
+        date: "19/05/2567",
+        id: "0000",
+        name: "รักษา รัตนไพศาล",
+        detail: "ปรับเครื่องมือ, ติดยางฟัน"
+    },
+    {
+        date: "20/05/2567",
+        id: "0001",
+        name: "Name",
+        detail: "ปรับเครื่องมือ"
+    }
+];
+
+let html = "";
+
+data.forEach((item, index) => {
+    html += `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${item.date}</td>
+            <td>${item.id}</td>
+            <td>${item.name}</td>
+            <td>${item.detail}</td>
+        </tr>
+    `;
+});
+
+document.getElementById("tbody").innerHTML = html;
+</script>
+
+</body>
+</html>

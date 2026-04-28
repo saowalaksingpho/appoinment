@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,28 +12,43 @@
             background-color: #fff;
             text-align: justify;
         }
+
         .container {
             width: 50%;
             margin: auto;
             background: #fff;
             padding: 20px;
+
         }
-        h2 {
+
+
+        /* .main-menu {
+            border-right: 1px solid #f4f2f2;
+            padding: 50px;
+             cursor: pointer;
+             text-decoration: none;
+        } */
+
+     h2 {
             margin-bottom: 10px;
         }
-        input, textarea {
+
+        input,textarea {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
             border-radius: 5px;
             border: 1px solid #ddd;
-            background: #f4f4ff; /* สีพื้นหลังช่องกรอก */
+            background: #f4f4ff;
+            /* สีพื้นหลังช่องกรอก */
         }
+
         .button-container {
             display: flex;
             justify-content: center;
             gap: 20px;
         }
+
         button {
             padding: 12px 30px;
             border: none;
@@ -41,79 +57,89 @@
             font-size: 16px;
             color: white;
         }
+
         .save-btn {
             background-color: green;
         }
+
         .cancel-btn {
             background-color: red;
         }
     </style>
 </head>
 <header class="header">
-    <a href="index.html" style="text-decoration: none;"> 
-    <div class="logo-container">
-        <img src="img/11.jpg" alt="logo" class="logo">
-        <span class="store-name">คลินิกทันตกรรมแกรนด์สไมล์</span>
-      </div> </a>
-    <div class="header-user"> <span id="userName"></span></div> 
-  </header> 
+    <a href="index.html" style="text-decoration: none;">
+        <div class="logo-container">
+            <img src="../img/11.jpg" alt="logo" class="logo">
+            <span class="store-name">คลินิกทันตกรรมแกรนด์สไมล์</span>
+        </div>
+    </a>
+    <div class="header-user"> <span id="userName"></span></div>
+</header>
+     <!-- <ul class="main-menu">
+  <li><a href="treatment_history.html"">ประวัติการรักษา</a></li>
+  <li><a href="treatmentreport.html">รายงานการรักษา</a></li>
+    <li><a href="receipt.html" >ใบเสร็จ</a></li>
+</ul> -->
 <body>
-    <div class="container">
-        <h2>ข้อมูลการรักษา</h2>
 
-        <form id="medicalRecordForm">
-            <label>วันที่</label>
-            <input type="date" id="treatmentDate" required>
+        <div class="container">
 
-            <div style="display: flex; gap: 50px;">
-                <div >
-                    <label>ชื่อ-สกุล</label>
-                    <input type="text" id="patientName" required>
+            <h2>ข้อมูลการรักษา</h2>
+
+            <form id="medicalRecordForm">
+                <label>วันที่</label>
+                <input type="date" id="treatmentDate" required>
+
+                <div style="display: flex; gap: 50px;">
+                    <div>
+                        <label>ชื่อ-สกุล</label>
+                        <input type="text" id="patientName" required>
+                    </div>
+                    <div>
+                        <label>ชื่อแพทย์</label>
+                        <input type="text" id="doctorName" required>
+                    </div>
                 </div>
-                <div>
-                    <label>ชื่อแพทย์</label>
-                    <input type="text" id="doctorName" required>
+
+                <label>รายละเอียด</label>
+                <textarea id="treatmentDetails" rows="4" required></textarea>
+
+                <div class="button-container">
+                    <button type="submit" class="save-btn">บันทึก</button>
+                    <button type="button" class="cancel-btn" onclick="clearForm()">ยกเลิก</button>
                 </div>
-            </div>
+            </form>
+        </div>
 
-            <label>รายละเอียด</label>
-            <textarea id="treatmentDetails" rows="4" required></textarea>
+        <script>
+            document.getElementById("medicalRecordForm").addEventListener("submit", function (e) {
+                e.preventDefault();
 
-            <div class="button-container">
-                <button type="submit" class="save-btn">บันทึก</button>
-                <button type="button" class="cancel-btn" onclick="clearForm()">ยกเลิก</button>
-            </div>
-        </form>
-    </div>
+                let date = document.getElementById("treatmentDate").value;
+                let patientName = document.getElementById("patientName").value;
+                let doctorName = document.getElementById("doctorName").value;
+                let details = document.getElementById("treatmentDetails").value;
 
-    <script>
-        document.getElementById("medicalRecordForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-            
-            let date = document.getElementById("treatmentDate").value;
-            let patientName = document.getElementById("patientName").value;
-            let doctorName = document.getElementById("doctorName").value;
-            let details = document.getElementById("treatmentDetails").value;
+                if (!date || !patientName || !doctorName || !details) {
+                    alert("กรุณากรอกข้อมูลให้ครบถ้วน!");
+                    return;
+                }
 
-            if (!date || !patientName || !doctorName || !details) {
-                alert("กรุณากรอกข้อมูลให้ครบถ้วน!");
-                return;
+                let treatmentRecord = {
+                    date, patientName, doctorName, details
+                };
+
+                console.log("บันทึกการรักษา:", treatmentRecord);
+                alert("บันทึกการรักษาสำเร็จ!");
+
+                clearForm();
+            });
+
+            function clearForm() {
+                document.getElementById("medicalRecordForm").reset();
             }
-
-            let treatmentRecord = {
-                date, patientName, doctorName, details
-            };
-
-            console.log("บันทึกการรักษา:", treatmentRecord);
-            alert("บันทึกการรักษาสำเร็จ!");
-
-            clearForm();
-        });
-
-        function clearForm() {
-            document.getElementById("medicalRecordForm").reset();
-        }
-    </script>
+        </script>
 </body>
-</html>
 
+</html>
