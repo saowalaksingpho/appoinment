@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f3f3;
+            margin: 0;
+            padding: 40px;
+        }
+
+        /* กระดาษ */
+        .paper {
+            width: 900px;
+            height: 1200px;
+            margin: auto;
+            background: #fff;
+            padding: 50px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #eaeaea;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .clinic-info {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .clinic-name {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        /* Title */
+        .title {
+            text-align: center;
+            margin: 40px 0 30px;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        /* Info Row */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        /* Table */
+        .table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            font-weight: 500;
+            padding-bottom: 10px;
+        }
+
+        .line {
+            border-bottom: 2px solid #999;
+        }
+
+        .table td {
+            padding: 12px 0;
+            font-size: 16px;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+        /* Bottom line */
+        .bottom-line {
+            border-bottom: 2px solid #999;
+            margin-top: 120px;
+        }
+
+        /* Total */
+        .total {
+            text-align: right;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 30%;
+            margin-top: 10px;
+            background-color: #3777b4;
+            color: #f3f3f3;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="paper">
+
+
+        <div>
+            <img src="../img/11.jpg" alt="logo" class="logo">
+        </div>
+        <div class="clinic-info">
+            <div class="clinic-name">คลินิกทันตกรรมแกรนด์สไมล์</div>
+            53/110 ถนนนวนคร ต.คลองหลวง ปทุมธานี 12120<br>
+            โทร 095 590 5307
+        </div>
+
+
+        <!-- Title -->
+        <div class="title">ใบเสร็จรับเงิน / Receipt</div>
+
+        <!-- Info -->
+        <div class="info-row">
+            <div>วันที่ <span id="date"></span></div>
+            <div>เลขที่ใบเสร็จ xx-xxxx</div>
+        </div>
+
+        <div class="info-row">
+            <div>ชื่อผู้ใช้บริการ: รักษา รัตนไพศาล</div>
+            <div>เบอร์โทรศัพท์ 0855547689</div>
+        </div>
+
+        <!-- Table -->
+        <table class="table">
+            <thead>
+                <tr class="line">
+                    <th class="center">ลำดับ</th>
+                    <th class="center">รายการ</th>
+                    <th class="center">จำนวน</th>
+                    <th class="center">ราคา</th>
+                </tr>
+            </thead>
+
+            <tbody id="tbody"></tbody>
+        </table>
+
+        <!-- Bottom Line -->
+        <div class="bottom-line"></div>
+
+        <!-- Total -->
+        <div class="total">
+            รวมทั้งสิ้น <span id="total"></span> บาท
+        </div>
+
+    </div>
+    <button>พิมพ์</button>
+
+    <script>
+        const data = [
+            { name: "ปรับเครื่องมือ", qty: 1, price: 1000 },
+            { name: "ถอนฟัน", qty: 2, price: 700 }
+        ];
+
+        // วันที่
+        document.getElementById("date").innerText =
+            new Date().toLocaleDateString("th-TH");
+
+        // render table
+        let total = 0;
+        let html = "";
+
+        data.forEach((item, index) => {
+            total += item.qty * item.price;
+
+            html += `
+        <tr>
+            <td class="center">${index + 1}.</td>
+            <td class="center">${item.name}</td>
+            <td class="center">${item.qty}</td>
+            <td class="center">${item.price} บาท</td>
+        </tr>
+    `;
+        });
+
+        document.getElementById("tbody").innerHTML = html;
+        document.getElementById("total").innerText = total;
+    </script>
+
+</body>
+
+</html>

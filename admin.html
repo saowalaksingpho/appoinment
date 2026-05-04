@@ -1,0 +1,51 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Admin</title>
+</head>
+<body>
+
+<h2>Admin Dashboard</h2>
+<ul id="userList"></ul>
+
+<script>
+const token = localStorage.getItem("token");
+
+// โหลด user
+fetch("http://localhost:3000/admin/users", {
+  headers: { Authorization: token }
+})
+.then(res => {
+  if (!res.ok) throw new Error("not admin");
+  return res.json();
+})
+.then(users => {
+  const list = document.getElementById("userList");
+
+  users.forEach(u => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      ${u.username} 
+      <button onclick="deleteUser('${u._id}')">ลบ</button>
+    `;
+    list.appendChild(li);
+  });
+})
+.catch(() => {
+  alert("คุณไม่ใช่ admin");
+  window.location.href = "login.html";
+});
+
+
+// ลบ user
+function deleteUser(id) {
+  fetch("http://localhost:3000/admin/users/" + id, {
+    method: "DELETE",
+    headers: { Authorization: token }
+  })
+  .then(() => location.reload());
+}
+</script>
+
+</body>
+</html> -->

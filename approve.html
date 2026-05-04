@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>อนุมัติการนัดหมาย</title>
+    <link rel="stylesheet" href="styles3.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .approve-btn {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .approve-btn:hover {
+            background-color: darkgreen;
+        }
+        .cancel-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .cancel-btn:hover {
+            background-color: darkred;
+        }
+        .status {
+            font-weight: bold;
+        }
+        .pending {
+            color: orange;
+        }
+        .approved {
+            color: green;
+        }
+        .canceled {
+            color: red;
+        }
+    </style>
+</head>
+<header class="header">
+    <a href="index.html" style="text-decoration: none;"> 
+    <div class="logo-container">
+        <img src="../img/11.jpg" alt="logo" class="logo">
+        <span class="store-name">คลินิกทันตกรรมแกรนด์สไมล์</span>
+      </div> </a>
+    <div class="header-user"> <span id="userName"></span></div> 
+  </header> 
+<body>
+    <div class="container">
+        <h2>รายการอนุมัติ/ยกเลิก</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ชื่อ-สกุล</th>
+                    <th>วันที่</th>
+                    <th>เวลา</th>
+                    <th>รายละเอียด</th>
+                    <th>จัดการ</th>
+                </tr>
+            </thead>
+            <tbody id="appointmentTable">
+                <!-- รายการการนัดหมายจะแสดงที่นี่ -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+            let tableBody = document.getElementById("appointmentTable");
+            tableBody.innerHTML = "";
+
+            if (appointments.length === 0) {
+                tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>ไม่มีการนัดหมาย</td></tr>";
+            } else {
+                appointments.forEach((appointment, index) => {
+                    let statusClass = "pending";
+                    if (appointment.status === "อนุมัติแล้ว") {
+                        statusClass = "approved";
+                    } else if (appointment.status === "ยกเลิก") {
+                        statusClass = "canceled";
+                    }
+
+                    let row = `<tr>
+                        <td>${appointment.date}</td>
+                        <td>${appointment.time}</td>
+                        <td>${appointment.details}</td>
+                        <td>${appointment.user}</td>
+                        <td class="status ${statusClass}">${appointment.status || "รออนุมัติ"}</td>
+                        <td>
+                            <button class="approve-btn" onclick="approveAppointment(${index})">✅ อนุมัติ</button>
+                            <button class="cancel-btn" onclick="cancelAppointment(${index})">❌ ยกเลิก</button>
+                        </td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            }
+        });
+
+        function approveAppointment(index) {
+            let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+            appointments[index].status = "อนุมัติแล้ว";
+            localStorage.setItem("appointments", JSON.stringify(appointments));
+            location.reload(); // รีเฟรชหน้า
+        }
+
+        function cancelAppointment(index) {
+            let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+            if (confirm("คุณต้องการยกเลิกการนัดหมายนี้ใช่หรือไม่?")) {
+                appointments[index].status = "ยกเลิก";
+                localStorage.setItem("appointments", JSON.stringify(appointments));
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

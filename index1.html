@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>คลินิกทันตกรรมแกรนด์สไมล์</title>
+    <link rel="stylesheet" href="styles1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<!-- ส่วน Header -->
+<header class="header">
+    <div class="logo-container">
+        <img src="img/11.jpg" alt="logo" class="logo">
+        <span class="store-name">คลินิกทันตกรรมแกรนด์สไมล์</span>
+    </div>
+    <a href="login.html" style="text-decoration: none;">
+      <div class="header-user" id="username" style="color: black;">Loading...</div> </a>
+      <button onclick="logout()">Logout</button>
+</header>
+
+<body>
+    <div class="container">
+        <!-- ส่วนที่ 1: รูปภาพและปุ่มคอนแทค -->
+        <div class="left-section">
+            <img src="img/11.jpg" alt="รูปภาพฟัน" class="tooth-image">
+            <a href="https://web.facebook.com/NewGrandSmile/?_rdc=1&_rdr#" style="text-decoration: none;">
+            <button class="contact-button"><i class="fa-solid fa-phone"></i> สนใจติดต่อสอบถาม</button> </a>
+        </div>
+
+        <!-- ส่วนที่ 2 และ 3: เมนู -->
+        <div class="right-section">
+            <!-- เมนูฝั่งซ้าย -->
+            <!-- <div class="menu-column">
+                <a href="index.html" style="text-decoration: none;"> 
+                <div class="menu-item">
+                    <i class="fa fa-home"></i>
+                    <p>หน้าหลัก</p>
+                </div></a>  -->
+
+                <a href="Treatmentinfo.html" style="text-decoration: none;"> 
+                <div class="menu-item">
+                    <i class="fa fa-folder"></i>
+                    <p>ข้อมูลการรักษา</p>
+                </div></a> 
+
+                <!-- <a href="Appointment.html" style="text-decoration: none;" >
+                    <div class="menu-item">
+                        <i class="fa fa-calendar"></i>
+                        <p>นัดหมาย</p>
+                    </div></a>
+            </div> -->
+
+            <!-- เมนูฝั่งขวา -->
+            <!-- <div class="menu-column">
+                <a href="manage_users.html" style="text-decoration: none;"> 
+                <div class="menu-item">
+                    <i class="fa fa-user"></i>
+                    <p>ข้อมูลผู้ใช้ระบบ</p>
+                </div></a>  -->
+  <a href="approve.html" style="text-decoration: none;"> 
+                <div class="menu-item">
+                    <i class="fa fa-list"></i>
+                    <p>อนุมัติ/ยกเลิก</p>
+                </div></a> 
+                <!-- <a href="treatment_history.html" style="text-decoration: none;">
+                    <div class="menu-item">
+                        <i class="fa fa-folder"></i>
+                        <p>ประวัติการรักษา</p>
+                    </div>
+                </a> -->
+
+              
+            </div>
+        </div>
+    </div>
+    <script>
+const token = localStorage.getItem("token");
+if (!token) {
+  alert("กรุณา login");
+  window.location.href = "login.html";
+}
+
+//  ดึงข้อมูล user
+fetch("http://localhost:3000/profile", {
+  headers: {
+    Authorization: token
+  }
+})
+.then(res => res.json())
+.then(data => {
+  document.getElementById("username").innerText = data.fullname;
+})
+.catch(err => {
+  console.error(err);
+});
+function logout() {
+  localStorage.removeItem("token");
+  window.location.href = "login.html";
+}
+</script>
+</body>
+</html>

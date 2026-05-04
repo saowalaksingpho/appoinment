@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สมัครสมาชิก</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      align-items: center;
+      height: 100vh;
+      background-color: #f7f4f4;
+    }
+
+    .container {
+      width: 300px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="tel"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      background-color: #e0e0e0;
+      /* สีเทาเหมือนภาพตัวอย่าง */
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-left: 10px;
+      margin-top: 15px;
+      background: #06803b;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+    }
+
+    button:hover {
+      background-color: #6f7f6f;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2 style="text-align: center;">สมัครสมาชิก</h2>
+    <form>
+      <div class="form-group">
+        <label for="fullname">ชื่อ-สกุล</label>
+        <input type="text" id="fullname" placeholder="กรอกชื่อ-สกุล">
+      </div>
+      <div class="form-group">
+        <label for="username">ชื่อผู้ใช้</label>
+        <input type="text" id="username" placeholder="กรอกชื่อผู้ใช้">
+      </div>
+      <div class="form-group">
+        <label for="password">รหัสผ่าน</label>
+        <input type="password" id="password" placeholder="กรอกรหัสผ่าน" required>
+      </div>
+      <div class="form-group">
+        <label for="phone">เบอร์โทร</label>
+        <input type="tel" id="phone" placeholder="กรอกเบอร์โทร">
+      </div>
+      <div class="form-group">
+        <label for="address">ที่อยู่</label>
+        <input type="text" id="address" placeholder="กรอกที่อยู่">
+      </div>
+      <div class="form-group">
+        <label for="email">อีเมล</label>
+        <input type="email" id="email" placeholder="กรอกอีเมล">
+      </div>
+      <button type="submit">Sign up</button>
+    </form>
+  </div>
+  <script>
+   
+document.querySelector("form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const form = e.target;
+
+  const data = {
+    fullname: document.getElementById("fullname").value,
+    username: document.getElementById("username").value,
+    password: document.getElementById("password").value,
+    phone: document.getElementById("phone").value,
+    address: document.getElementById("address").value,
+    email: document.getElementById("email").value
+  };
+
+  try {
+    const res = await fetch("http://localhost:3000/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+
+    const text = await res.text();
+    console.log(text);
+
+    if (res.ok) {
+      alert("สมัครสมาชิกสำเร็จ");
+      form.reset(); 
+      window.location.href = "login.html";
+    } else {
+      alert("สมัครไม่สำเร็จ");
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("เชื่อมต่อ server ไม่ได้");
+  }
+});
+  </script>
+</body>
+
+</html>

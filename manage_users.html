@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดการข้อมูลผู้ใช้</title>
+    <link rel="stylesheet" href="styles3.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+</head>
+<header class="header">
+    <a href="index.html" style="text-decoration: none;">
+        <div class="logo-container">
+            <img src="img/11.jpg" alt="logo" class="logo">
+            <span class="store-name">คลินิกทันตกรรมแกรนด์สไมล์</span>
+        </div>
+    </a>
+      <div class="header-user" id="username">Loading...</div>
+</header>
+
+<body>
+
+    <div class="container mt-5">
+        <h2>จัดการข้อมูลผู้ใช้</h2>
+
+        <button class="btn btn-success mb-3" onclick="showAddUser()">+ เพิ่มผู้ใช้</button>
+      
+
+
+<select id="roleSelect" onchange="loadUsers()">
+  <option value="all">ทั้งหมด</option>
+  <option value="admin">Admin</option>
+  <option value="user">User</option>
+  <option value="doctor">Doctor</option>
+</select>
+
+<table id="userTable" class="display table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>ชื่อ-สกุล</th>
+      <th>เบอร์โทร</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>จัดการ</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+
+
+
+    <!-- Modal เพิ่มผู้ใช้ -->
+<div id="addUserModal" style="display:none;">
+  <h3>เพิ่มผู้ใช้</h3>
+
+  <input type="text" id="fulllname" placeholder="ชื่อ">
+  <input type="text" id="username" placeholder="username">
+  <input type="password" id="password" placeholder="password">
+  <input type="text" id="email" placeholder="email">
+  <input type="text" id="phone" placeholder="phone">
+
+  <select id="role">
+    <option value="user">User</option>
+    <option value="doctor">Doctor</option>
+    <option value="admin">Admin</option>
+  </select>
+
+  <button onclick="addUser()">บันทึก</button>
+  <button onclick="closeModal()">ปิด</button>
+</div>
+
+    <!-- Modal แก้ไข -->
+<div id="editModal" class="modal">
+  <div class="modal-content">
+    <h4>แก้ไขข้อมูลผู้ใช้</h4>
+
+    <input type="hidden" id="editId">
+
+    <label>ชื่อ:
+      <input type="text" id="editName">
+    </label>
+
+    <label>Email:
+      <input type="email" id="editEmail">
+    </label>
+
+    <label>เบอร์:
+      <input type="text" id="editPhone">
+    </label>
+
+    <button onclick="updateUser()">บันทึก</button>
+  </div>
+</div>
+
+    <script>
+        $(document).ready(function () {
+            $('#userTable').DataTable();
+            loadUsers();
+        });
+
+        function filterTable() {
+  const value = document.getElementById("roleSelect").value;
+
+  document.getElementById("adminSection").style.display =
+    (value === "admin" || value === "all") ? "block" : "none";
+
+  document.getElementById("userSection").style.display =
+    (value === "user" || value === "all") ? "block" : "none";
+
+  document.getElementById("doctorSection").style.display =
+    (value === "doctor" || value === "all") ? "block" : "none";
+}
+
+    // โหลดรายชื่อผู้ใช้
+function loadUsers() {
+  const roleFilter = document.getElementById("roleSelect").value;
+
+  if ($.fn.DataTable.isDataTable('#userTable')) {
+    $('#userTable').DataTable().destroy();
+  }
+
+  $('#userTable tbody').empty();
+
+  $.ajax({
+    url: "http://localhost:3000/get_all",
+    method: "GET",
+    success: function(data) {
+
+      let all = [
+        ...data.admins,
+        ...data.users,
+        ...data.doctors
+      ];
+
+      // 🔥 filter
+      if (roleFilter !== "all") {
+        all = all.filter(u => u.role === roleFilter);
+      }
+
+      let table = $("#userTable").DataTable();
+
+      all.forEach((u, i) => {
+        table.row.add([
+          i + 1,
+          u.fullname || "-",
+          u.phone || "-",
+          u.email || "-",
+          u.role,
+          `
+            <button onclick="editUser('${u._id}','${u.fullname}','${u.email}','${u.phone}')">แก้ไข</button>
+            <button onclick="deleteUser('${u._id}')">ลบ</button>
+          `
+        ]);
+      });
+
+      table.draw();
+    }
+  });
+}
+function addUser() {
+  const fullname = $("#name").val();
+  const username = $("#username").val();
+  const password = $("#password").val();
+  const email = $("#email").val();
+  const phone = $("#phone").val();
+  const role = $("#role").val();
+
+    let url = "";
+
+     if (role === "admin") {
+    url = "http://localhost:3000/add_admin";
+  } else if (role === "doctor") {
+    url = "http://localhost:3000/add_doctor";
+  } else {
+    url = "http://localhost:3000/add_user";
+  }
+
+
+  $.ajax({
+    url: url,
+    method: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({
+      fullname,
+      username,
+      password,
+      email,
+      phone,
+      role
+    }),
+    success: function(res) {
+      alert(res.message);
+      loadUsers();
+    }
+  });
+}
+function showAddUser() {
+  $("#addUserModal").show();
+}
+
+function closeModal() {
+  $("#addUserModal").hide();
+}
+        function editUser(id, name, email, phone) {
+  document.getElementById("editId").value = id;
+  document.getElementById("editName").value = name;
+  document.getElementById("editEmail").value = email;
+  document.getElementById("editPhone").value = phone;
+
+  document.getElementById("editModal").style.display = "block";
+}
+function updateUser() {
+  const id = $("#editId").val();
+  const name = $("#editName").val();
+  const email = $("#editEmail").val();
+  const phone = $("#editPhone").val();
+
+  $.ajax({
+    url: "http://localhost:3000/update_user",
+    method: "POST",
+    headers: {
+      Authorization: localStorage.getItem("token")
+    },
+    contentType: "application/json",
+    data: JSON.stringify({ id, name, email, phone }),
+
+    success: function(res) {
+      alert(res.message);
+
+      // เคลียร์ฟอร์ม
+      $("#editId").val("");
+      $("#editName").val("");
+      $("#editEmail").val("");
+      $("#editPhone").val("");
+
+      // ปิด modal
+      $("#editModal").hide();
+      loadUsers();
+    },
+
+    error: function(err) {
+      console.error(err);
+      alert("เกิดข้อผิดพลาด");
+    }
+  });
+}
+    
+   
+        // อัปเดตบทบาท
+ function updateRole(id, role) {
+  $.ajax({
+    url: "http://localhost:3000/update_role",
+    method: "POST",
+    headers: {
+      Authorization: localStorage.getItem("token")
+    },
+    contentType: "application/json", // ✅ สำคัญ
+    data: JSON.stringify({
+      userId: id,
+      role: role
+    }),
+    success: function(res) {
+      alert(res.message);
+    }
+  });
+}
+
+        // ลบผู้ใช้
+       function deleteUser(id) {
+  if (confirm("ลบจริง?")) {
+    $.ajax({
+      url: "http://localhost:3000/delete_user",
+      method: "POST",
+      headers: {
+        Authorization: localStorage.getItem("token")
+      },
+      contentType: "application/json",
+      data: JSON.stringify({ userId: id }),
+
+      success: function(res) {
+        alert(res.message);
+
+      
+        loadUsers();
+      },
+
+      error: function(err) {
+        console.error(err);
+        alert("ลบไม่สำเร็จ");
+      }
+    });
+  }
+}
+
+$(document).ready(function () {
+  loadProfile();
+});
+
+function loadProfile() {
+  $.ajax({
+    url: "http://localhost:3000/profile",
+    method: "GET",
+    headers: {
+      Authorization: localStorage.getItem("token")
+    },
+    success: function(user) {
+      $("#username").text(user.fullname); 
+    },
+    error: function(err) {
+      console.error(err);
+    }
+  });
+}
+window.onload = function () {
+  filterTable();
+};
+
+    </script>
+
+</body>
+
+</html>
